@@ -11,6 +11,8 @@ public class GamePanel extends JPanel implements ActionListener{
     static final int GAME_UNITS = (WIDTH*HEIGHT)/UNIT_SIZE;
     JSlider slider = new JSlider(5, 25);
     int delay = 100;
+    Timer timer;
+
     int squareX;
     int squareY;
     boolean running = true;
@@ -19,6 +21,7 @@ public class GamePanel extends JPanel implements ActionListener{
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.add(slider);
+        timer = new Timer(delay, this);
         UNIT_SIZE = slider.getValue();
         this.addMouseListener(new MouseListener() {
             @Override
@@ -47,6 +50,8 @@ public class GamePanel extends JPanel implements ActionListener{
 
             }
         });
+
+        timer.start();
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
