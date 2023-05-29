@@ -9,8 +9,9 @@ import java.awt.event.MouseListener;
 public class GamePanel extends JPanel{
     static final int WIDTH = 800;
     static final int HEIGHT = 800;
-    static final int UNIT_SIZE = 25;
+    static int UNIT_SIZE = 25;
     static final int GAME_UNITS = (WIDTH*HEIGHT)/UNIT_SIZE;
+    JSlider slider = new JSlider(5, 25);
 
     int squareX;
     int squareY;
@@ -22,20 +23,20 @@ public class GamePanel extends JPanel{
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
                 squareX = e.getX();
                 squareY = e.getY();
                 System.out.println(squareX + " " + squareY);
+                UNIT_SIZE = slider.getValue();
                 repaint();
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
 
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
             }
 
             @Override
@@ -48,6 +49,7 @@ public class GamePanel extends JPanel{
 
             }
         });
+        this.add(slider);
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -65,8 +67,8 @@ public class GamePanel extends JPanel{
     }
 
     public void drawSquare(Graphics g) {
-        squareX = 25*(Math.round((float) squareX /25));
-        squareY = 25*(Math.round((float) squareY /25));
+        squareX =UNIT_SIZE*(Math.round((float) squareX /UNIT_SIZE));
+        squareY = UNIT_SIZE*(Math.round((float) squareY /UNIT_SIZE));
         g.setColor(Color.WHITE);
         g.fillRect(squareX, squareY, UNIT_SIZE, UNIT_SIZE);
     }
