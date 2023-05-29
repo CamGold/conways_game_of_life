@@ -2,16 +2,16 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
-public class GamePanel extends JPanel{
+public class GamePanel extends JPanel implements ActionListener{
     static final int WIDTH = 800;
     static final int HEIGHT = 800;
     static int UNIT_SIZE = 25;
     static final int GAME_UNITS = (WIDTH*HEIGHT)/UNIT_SIZE;
     JSlider slider = new JSlider(5, 25);
+    int delay = 100;
+    Timer timer;
 
     int squareX;
     int squareY;
@@ -20,14 +20,14 @@ public class GamePanel extends JPanel{
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
+        this.add(slider);
+        timer = new Timer(delay, this);
+        UNIT_SIZE = slider.getValue();
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 squareX = e.getX();
                 squareY = e.getY();
-                System.out.println(squareX + " " + squareY);
-                UNIT_SIZE = slider.getValue();
-                repaint();
             }
 
             @Override
@@ -37,6 +37,7 @@ public class GamePanel extends JPanel{
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                UNIT_SIZE = slider.getValue();
             }
 
             @Override
@@ -49,7 +50,8 @@ public class GamePanel extends JPanel{
 
             }
         });
-        this.add(slider);
+
+        timer.start();
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -73,4 +75,8 @@ public class GamePanel extends JPanel{
         g.fillRect(squareX, squareY, UNIT_SIZE, UNIT_SIZE);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        repaint();
+    }
 }
