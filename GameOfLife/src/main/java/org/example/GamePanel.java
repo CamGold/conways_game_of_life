@@ -2,16 +2,18 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.util.ArrayList;
 
-public class GamePanel extends JPanel{
+public class GamePanel extends JPanel implements ActionListener{
     static final int WIDTH = 800;
     static final int HEIGHT = 800;
     static int UNIT_SIZE = 25;
     static final int GAME_UNITS = (WIDTH*HEIGHT)/UNIT_SIZE;
-    JSlider slider = new JSlider(5, 25);
+//    JSlider slider = new JSlider(5, 25);
+    int delay = 100;
+    Timer timer;
+    ArrayList<Square> squareList = new ArrayList<>();
 
     int squareX;
     int squareY;
@@ -20,14 +22,14 @@ public class GamePanel extends JPanel{
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
+//        this.add(slider);
+        timer = new Timer(delay, this);
+//        UNIT_SIZE = slider.getValue();
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 squareX = e.getX();
                 squareY = e.getY();
-                System.out.println(squareX + " " + squareY);
-                UNIT_SIZE = slider.getValue();
-                repaint();
             }
 
             @Override
@@ -37,6 +39,7 @@ public class GamePanel extends JPanel{
 
             @Override
             public void mouseReleased(MouseEvent e) {
+//                UNIT_SIZE = slider.getValue();
             }
 
             @Override
@@ -49,7 +52,8 @@ public class GamePanel extends JPanel{
 
             }
         });
-        this.add(slider);
+
+        timer.start();
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -62,15 +66,30 @@ public class GamePanel extends JPanel{
                 g.drawLine(i * UNIT_SIZE, 0, i*UNIT_SIZE, HEIGHT);
                 g.drawLine(0, i * UNIT_SIZE, WIDTH, i * UNIT_SIZE);
             }
-            drawSquare(g);
+            createSquare();
+            drawSquare(g, squareList);
         }
     }
 
-    public void drawSquare(Graphics g) {
+    public void createSquare() {
         squareX =UNIT_SIZE*(Math.round((float) squareX /UNIT_SIZE));
         squareY = UNIT_SIZE*(Math.round((float) squareY /UNIT_SIZE));
-        g.setColor(Color.WHITE);
-        g.fillRect(squareX, squareY, UNIT_SIZE, UNIT_SIZE);
+        Square square = new Square(squareX, squareY);
+        squareList.add(square);
     }
 
+    public void drawSquare(Graphics g, ArrayList<Square> squareList) {
+        for (Square square : squareList) {
+            int x = square.getSquareX();
+            int y = square.setSquareY();
+            g.setColor(Color.WHITE);
+            g.fillRect(x, y, UNIT_SIZE, UNIT_SIZE);
+        }
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        repaint();
+    }
 }
