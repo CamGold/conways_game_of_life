@@ -14,7 +14,6 @@ public class GamePanel extends JPanel implements ActionListener{
     int delay = 100;
     Timer timer;
     ArrayList<Square> squareList = new ArrayList<>();
-
     int squareX;
     int squareY;
     boolean running = true;
@@ -52,14 +51,12 @@ public class GamePanel extends JPanel implements ActionListener{
 
             }
         });
-        timer.start();
-        if (running){
-            for (int i = 0; i <HEIGHT/UNIT_SIZE; i++) {
-                for (int j = 0; j <HEIGHT; j++) {
-                    squareList.add(new Square(j * UNIT_SIZE, i * UNIT_SIZE));
-                }
+        for (int i = 0; i <HEIGHT/UNIT_SIZE; i++) {
+            for (int j = 0; j <HEIGHT; j++) {
+                squareList.add(new Square(j * UNIT_SIZE, i * UNIT_SIZE));
             }
         }
+        timer.start();
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
