@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class GamePanel extends JPanel implements ActionListener{
     static final int WIDTH = 800;
     static final int HEIGHT = 800;
-    static int UNIT_SIZE = 25;
+    static int UNIT_SIZE = 20;
     static final int GAME_UNITS = (WIDTH*HEIGHT)/UNIT_SIZE;
 //    JSlider slider = new JSlider(5, 25);
     int delay = 100;
@@ -63,29 +63,32 @@ public class GamePanel extends JPanel implements ActionListener{
     public void drawComponent(Graphics g) {
         if (running){
             for (int i = 0; i <HEIGHT/UNIT_SIZE; i++) {
-                g.drawLine(i * UNIT_SIZE, 0, i*UNIT_SIZE, HEIGHT);
-                g.drawLine(0, i * UNIT_SIZE, WIDTH, i * UNIT_SIZE);
+                for (int j = 0; j <HEIGHT; j++) {
+                    squareList.add(new Square(j * UNIT_SIZE, i * UNIT_SIZE));
+                }
             }
-            createSquare();
+            createSquare(squareList);
             drawSquare(g, squareList);
         }
     }
 
-    public void createSquare() {
+    public void createSquare(ArrayList<Square> squareList) {
         squareX =UNIT_SIZE*(Math.round((float) squareX /UNIT_SIZE));
         squareY = UNIT_SIZE*(Math.round((float) squareY /UNIT_SIZE));
-        Square square = new Square(squareX, squareY);
-        squareList.add(square);
+        for(Square square : squareList){
+            if (squareX == square.getSquareX() && squareY == square.getSquareY()){
+                square.setVisible(true);
+            }
+        }
     }
 
     public void drawSquare(Graphics g, ArrayList<Square> squareList) {
         for (Square square : squareList) {
             int x = square.getSquareX();
             int y = square.setSquareY();
-            g.setColor(Color.WHITE);
+            g.setColor(square.getColor());
             g.fillRect(x, y, UNIT_SIZE, UNIT_SIZE);
         }
-
     }
 
     @Override
