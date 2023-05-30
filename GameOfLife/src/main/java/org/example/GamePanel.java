@@ -52,8 +52,14 @@ public class GamePanel extends JPanel implements ActionListener{
 
             }
         });
-
         timer.start();
+        if (running){
+            for (int i = 0; i <HEIGHT/UNIT_SIZE; i++) {
+                for (int j = 0; j <HEIGHT; j++) {
+                    squareList.add(new Square(j * UNIT_SIZE, i * UNIT_SIZE));
+                }
+            }
+        }
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -61,15 +67,8 @@ public class GamePanel extends JPanel implements ActionListener{
     }
 
     public void drawComponent(Graphics g) {
-        if (running){
-            for (int i = 0; i <HEIGHT/UNIT_SIZE; i++) {
-                for (int j = 0; j <HEIGHT; j++) {
-                    squareList.add(new Square(j * UNIT_SIZE, i * UNIT_SIZE));
-                }
-            }
             createSquare(squareList);
             drawSquare(g, squareList);
-        }
     }
 
     public void createSquare(ArrayList<Square> squareList) {
